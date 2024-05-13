@@ -1,0 +1,16 @@
+syntax="proto3";
+package no.mattilsynet.sample.external.nats;
+
+option java_package = "no.mattilsynet.sample.external.nats";
+import "google/protobuf/timestamp.proto";
+
+
+message Order {
+  // Unique identifier for the order
+  string uuid = 1;
+  // Lokalitetsnummer fra fiskeridrektoratet
+  string lokalitetsnummer = 2;
+  // Arkivsak som dokumenter skal legges til. 
+  // Format 2024/321443
+  string saksid = 3;
+}
