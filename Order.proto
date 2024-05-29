@@ -5,22 +5,25 @@ option java_package = "no.mattilsynet.sample.external.nats";
 import "google/protobuf/timestamp.proto";
 
 enum OrderReason {
-  SUSPICION = 0;
-  SURVEILLANCE = 1;
-  OKPROGRAM = 2;
+  ORDERREASON_UNSPECIFIED = 0;
+  ORDERREASON_SUSPICION = 1;
+  ORDERREASON_SURVEILLANCE = 2;
+  ORDERREASON_OKPROGRAM = 3;
 }
 
 enum Interval {
-  DAILY = 0;
-  WEEKLY = 1;
-  MONTHLY = 2;
-  YEARLY = 3;
+  INTERVAL_UNSPECIFIED = 0;
+  INTERVAL_DAILY = 1;
+  INTERVAL_WEEKLY = 2;
+  INTERVAL_MONTHLY = 3;
+  INTERVAL_YEARLY = 4;
 }
 
 enum ExpirationType {
-  NEVER = 0;
-  DATE = 1;
-  NUMBER_OF_OCCURRENCES = 2;
+  EXPIRATIONTYPE_UNSPECIFIED = 0;
+  EXPIRATIONTYPE_NEVER = 1;
+  EXPIRATIONTYPE_DATE = 2;
+  EXPIRATIONTYPE_NUMBER_OF_OCCURRENCES = 3;
 }
 
 message RecurringEvent {
