@@ -4,13 +4,59 @@ package no.mattilsynet.sample.external.nats;
 option java_package = "no.mattilsynet.sample.external.nats";
 import "google/protobuf/timestamp.proto";
 
+enum OrderReason {
+  SUSPICION = 0;
+  SURVEILLANCE = 1;
+  OKPROGRAM = 2;
+}
+
+enum Interval {
+  DAILY = 0;
+  WEEKLY = 1;
+  MONTHLY = 2;
+  YEARLY = 3;
+}
+
+enum ExpirationType {
+  NEVER = 0;
+  DATE = 1;
+  NUMBER_OF_OCCURRENCES = 2;
+}
+
+message RecurringEvent {
+  // The interval at which the event should occur.
+  Interval interval = 1;
+  // .. and it should occur every x intervals.
+  int32 every = 2;
+  // When the event should expire.
+  ExpirationType expirationType = 3;
+  // How many times the event should occur.
+  int32 expirationValue = 4;
+
+}
 
 message Order {
   // Unique identifier for the order
   string uuid = 1;
+  // External ID. This is the ID that the external system can use to identify the order
+  string externalId = 2;
+  // Analysis type, combination of substance, matrix and product.
+  // Id found in the supported analysis types subject.
+  int64 analysisType = 3;
+  // Number of samples to take for this order.
+  int32 numberOfSamples = 4;
+  // Laboratory that will perform the analysis.
+  // Id found in the supported laboratories subject.
+  int32 laboratoryId = 5;
+  // Reason for the order.
+  OrderReason reason = 6;
   // Lokalitetsnummer fra fiskeridrektoratet
-  string lokalitetsnummer = 2;
-  // Arkivsak som dokumenter skal legges til. 
-  // Format 2024/321443
-  string saksid = 3;
+  string lokalitetsnummer = 7;
+  // The unit that the order is for.
+  string unit = 8;
+  // The date when the analysis should start.
+  google.protobuf.Timestamp startDate = 9;
+  // If the order is recurring, this field will contain the recurring event.
+  optional RecurringEvent recurringEvent = 10;
 }
+
