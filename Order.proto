@@ -63,3 +63,9 @@ message Order {
   optional RecurringEvent recurringEvent = 10;
 }
 
+
+message OrderReceipt {
+  string taskId = 0;
+  // External ID. This is the ID that the external system can use to identify the order
+  string externalId = 1;
+}
