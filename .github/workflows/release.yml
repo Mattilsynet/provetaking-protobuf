@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Release libs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch git history
+        run: git fetch --unshallow
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+      - name: Setup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo Release started by $GITHUB_ACTOR
+          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+      - name: Create version
+        id: setup_version
+        run: echo "version=$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M)-$(git rev-parse --short=12 HEAD)" >> $GITHUB_OUTPUT
+      - name: Create changelog
+        id: setup_changelog
+        run: echo "changelog=$(git rev-parse --short=12 HEAD) $(git log -1 --pretty=%B)" >> "$GITHUB_OUTPUT"
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+        run: |
+          echo Releasing version ${{ steps.setup_version.outputs.version }}
+          ./gradlew publish -PreleaseVersion=${{ steps.setup_version.outputs.version }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.setup_version.outputs.version }}
+          release_name: Arkivering ${{ steps.setup_version.outputs.version }}
+          body: |
+            # provetaking-protobuf
+            ## Changelog
+            ${{ steps.setup_changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
