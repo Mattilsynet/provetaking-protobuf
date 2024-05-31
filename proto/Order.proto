@@ -1,6 +1,7 @@
 syntax="proto3";
 package no.mattilsynet.sample.external.nats;
 
+option java_multiple_files = true;
 option java_package = "no.mattilsynet.sample.external.nats";
 import "google/protobuf/timestamp.proto";
 
