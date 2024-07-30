@@ -27,6 +27,11 @@ enum ExpirationType {
   EXPIRATIONTYPE_NUMBER_OF_OCCURRENCES = 3;
 }
 
+enum RequestType {
+  REQUESTTYPE_UNSPECIFIED = 0;
+  REQUESTTYPE_ILA = 1;
+}
+
 message RecurringEvent {
   // The interval at which the event should occur.
   Interval interval = 1;
@@ -44,9 +49,8 @@ message Order {
   string uuid = 1;
   // External ID. This is the ID that the external system can use to identify the order
   string externalId = 2;
-  // Analysis type, combination of substance, matrix and product.
-  // Id found in the supported analysis types subject.
-  int64 analysisType = 3;
+  // Request type.
+  RequestType requestType = 3;
   // Number of samples to take for this order.
   int32 numberOfSamples = 4;
   // Laboratory that will perform the analysis.
@@ -54,8 +58,8 @@ message Order {
   int32 laboratoryId = 5;
   // Reason for the order.
   OrderReason reason = 6;
-  // Lokalitetsnummer fra fiskeridrektoratet
-  string lokalitetsnummer = 7;
+  // Where tha sample must be taken. E.g lokalitetsnummer
+  string targetIdentificator = 7;
   // The unit that the order is for.
   string unit = 8;
   // The date when the analysis should start.
