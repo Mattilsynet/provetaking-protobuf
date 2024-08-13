@@ -1,0 +1,31 @@
+syntax="proto3";
+package no.mattilsynet.sample.external.nats;
+
+option java_package = "no.mattilsynet.sample.external.nats";
+import "google/protobuf/timestamp.proto";
+
+enum Result {
+  RESULT_UNSPECIFIED = 0;
+  RESULT_NEGATIVE = 1;
+  RESULT_POSITIVE = 2;
+}
+
+message SampleStatus {
+  // Unique identifier for the sample
+  string sampleid = 1;
+  // The object that was inspected
+  string target = 2;
+  // What is was taken a sample of.
+  string product = 4;
+  // What part of the product that was examined.
+  string matrix = 5;
+  // Array of what the product & matrix was tested for.
+  repeated string substance = 6;
+  // Will be true if results are positive, false if results are negative
+  // and empty if no results have been received.
+  Result result = 7;
+
+  string archiveid = 8;
+  // The date the sample was taken
+  google.protobuf.Timestamp uttaksdato = 9;
+}
