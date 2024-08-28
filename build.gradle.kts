@@ -20,7 +20,7 @@ repositories {
 }
 
 //NB! com.google.cloud:spring-cloud-gcp-dependencies:5.x.x støtter ikke protobuf 4.x.x vent til oppdatering
-val protobuf = "3.25.3"
+val protobuf = "4.27.4"
 
 dependencies {
     implementation("com.google.protobuf:protobuf-kotlin:$protobuf")
